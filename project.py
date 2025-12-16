@@ -3,14 +3,14 @@ Multivariable Linear Regression Project
 Assignment 6 Part 3
 
 Group Members:
-- 
-- 
-- 
-- 
+- Arjun Prabhakaran
+- Liam McCreery
+- Alexander Schildgen
+- Jacob Martinez
 
-Dataset: [Name of your dataset]
-Predicting: [What you're predicting]
-Features: [List your features]
+Dataset: [World Happiness Ranking]
+Predicting: [Country Happiness Score]
+Features: [Economy, Family, Freedom, Trust]
 """
 
 import pandas as pd
@@ -21,7 +21,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 import numpy as np
 
 # TODO: Update this with your actual filename
-DATA_FILE = 'your_data.csv'
+DATA_FILE = 'world_happiness_report.csv'
 
 def load_and_explore_data(filename):
     """
@@ -39,8 +39,11 @@ def load_and_explore_data(filename):
     print("=" * 70)
     
     # Your code here
-    
-    pass
+    df = pd.read_csv(filename)
+    print(df.head())
+    print(df.shape)
+    print(df.columns)
+    print(df.describe())
 
 
 def visualize_data(data):
