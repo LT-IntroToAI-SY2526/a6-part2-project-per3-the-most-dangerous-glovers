@@ -249,7 +249,7 @@ def evaluate_model(model, X_test, y_test, feature_columns):
     return predictions
 
 
-def make_prediction(model, feature_columns):
+def make_prediction(model, econ, fam, free, trust,feature_columns):
     """
     Make a prediction for a new example
     
@@ -273,7 +273,7 @@ def make_prediction(model, feature_columns):
     # sample = pd.DataFrame([[2000, 3, 2]], columns=feature_names)
     
     # Create input array in the correct order: [Mileage, Age, Brand]
-    happiness_features = pd.DataFrame([feature_columns], 
+    happiness_features = pd.DataFrame([econ, fam, free, trust], 
                                  columns=feature_columns)
     predicted_happiness = model.predict(happiness_features)[0]
     
