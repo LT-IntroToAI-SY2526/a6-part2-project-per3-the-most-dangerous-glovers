@@ -44,6 +44,7 @@ def load_and_explore_data(filename):
     print(df.shape)
     print(df.columns)
     print(df.describe())
+    return df
 
 
 def visualize_data(data):
@@ -273,14 +274,18 @@ def make_prediction(model, econ, fam, free, trust,feature_columns):
     # sample = pd.DataFrame([[2000, 3, 2]], columns=feature_names)
     
     # Create input array in the correct order: [Mileage, Age, Brand]
-    happiness_features = pd.DataFrame([econ, fam, free, trust], 
-                                 columns=feature_columns)
-    predicted_happiness = model.predict(happiness_features)[0]
+    sample = pd.DataFrame(
+        [[econ, fam, free, trust]],
+        columns=feature_columns
+    )
     
+    predicted_happiness = model.predict(sample)[0]
     
-    print(f"\n=== New Prediction ===")
-    print(f"Economy Score: {feature_columns[0]:.0f}, Family score:{feature_columns[1]}, freedom score:{feature_columns[2]}, trust score:{feature_columns[3]}")
-    print(f"Predicted price: ${predicted_happiness:,.2f}")
+    print("\nInput values:")
+    for col, val in zip(feature_columns, sample.iloc[0]):
+        print(f"  {col}: {val}")
+    
+    print(f"\nPredicted Happiness Score: {predicted_happiness:.2f}")
     
     return predicted_happiness
 
@@ -288,22 +293,24 @@ def make_prediction(model, econ, fam, free, trust,feature_columns):
 
 if __name__ == "__main__":
     # Step 1: Load and explore
-    data = load_and_explore_data(DATA_FILE)
+    data = load_and_explore_data('world_happiness_report.csv')
     
     # Step 2: Visualize
     visualize_data(data)
     
     # Step 3: Prepare and split
-    X_train, X_test, y_train, y_test = prepare_and_split_data(data)
+    X_train, X_test, y_train, y_test, feature_columns = prepare_and_split_data(data)
     
     # Step 4: Train
-    model = train_model(X_train, y_train)
+    model = train_model(X_train, y_train, feature_columns)
     
     # Step 5: Evaluate
-    predictions = evaluate_model(model, X_test, y_test)
+    predictions = evaluate_model(model, X_test, y_test, feature_columns)
+
     
     # Step 6: Make a prediction, add features as an argument
-    make_prediction(model)
+    make_prediction(model, 1.39451, 1.24711, 0.54604, 0.1589, feature_columns)
+    print('Actual Score for the US: 7.119')
     
     print("\n" + "=" * 70)
     print("PROJECT COMPLETE!")
